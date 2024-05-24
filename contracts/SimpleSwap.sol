@@ -4,15 +4,18 @@ pragma abicoder v2;
 
 import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
 import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
+import '@uniswap/v3-periphery/contracts/interfaces/IQuoter.sol';
 
 contract SimpleSwap {
     ISwapRouter public immutable swapRouter;
+    IQuoter public immutable quoter;
     address public constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
     address public constant WETH9 = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
     uint24 public constant feeTier = 3000;
 
-    constructor(ISwapRouter _swapRouter) {
+    constructor(ISwapRouter _swapRouter,IQuoter _quoter) {
         swapRouter = _swapRouter;
+        quoter=_quoter;
     }
 
     function swapWETHForDAI(uint256 amountIn) external returns (uint256 amountOut) {
