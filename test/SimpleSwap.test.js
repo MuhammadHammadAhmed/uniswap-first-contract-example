@@ -19,23 +19,40 @@ describe("SimpleSwap", function () {
   it("Should provide a caller with more DAI than they started with after a swap", async function () {
     
     /* Deploy the SimpleSwap contract */
+    /* Deploy the SimpleSwap contract */
+const simpleSwapFactory = await ethers.getContractFactory('SimpleSwap')
+const simpleSwap = await simpleSwapFactory.deploy(SwapRouterAddress)
+await simpleSwap.deployed();
 
 
     /* Connect to weth9 and wrap some eth  */
+    let signers = await hre.ethers.getSigners()
+const WETH = new hre.ethers.Contract(WETH_ADDRESS, ercAbi, signers[0])
+const deposit = await WETH.deposit({ value: hre.ethers.utils.parseEther('10') })
+await deposit.wait()
 
     
     /* Check Initial DAI Balance */ 
-
+    const DAI = new hre.ethers.Contract(DAI_ADDRESS, ercAbi, signers[0])
+    const expandedDAIBalanceBefore = await DAI.balanceOf(signers[0].address)
+    const DAIBalanceBefore = Number(hre.ethers.utils.formatUnits(expandedDAIBalanceBefore, DAI_DECIMALS))
+console.log("initial DAI",DAIBalanceBefore);
 
     /* Approve the swapper contract to spend weth9 for me */
-
+    await WETH.approve(simpleSwap.address, hre.ethers.utils.parseEther('1'));
     
     /* Execute the swap */
- 
-    
-    /* Check DAI end balance */
+    const amountIn = hre.ethers.utils.parseEther('0.11')
+    const swap = await simpleSwap.swapWETHForDAI(amountIn, { gasLimit: 300000 })
+    swap.wait();
 
     
+    /* Check DAI end balance */
+const expandedDAIBalanceAfter = await DAI.balanceOf(signers[0].address)
+const DAIBalanceAfter = Number(hre.ethers.utils.formatUnits(expandedDAIBalanceAfter, DAI_DECIMALS))
+console.log("Post  DAI",DAIBalanceAfter,DAIBalanceAfter-DAIBalanceBefore);
+console.log("Incremental   DAI",DAIBalanceAfter-DAIBalanceBefore);
+
     /* Test that we now have more DAI than when we started */
 
 
