@@ -5,6 +5,7 @@ const WETH_ADDRESS = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 const DAI_ADDRESS = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 const DAI_DECIMALS = 18; 
 const SwapRouterAddress = "0xE592427A0AEce92De3Edee1F18E0157C05861564"; 
+const QuoterAddress="0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6";
 
 const ercAbi = [
   // Read-Only Functions
@@ -21,7 +22,7 @@ describe("SimpleSwap", function () {
     /* Deploy the SimpleSwap contract */
     /* Deploy the SimpleSwap contract */
 const simpleSwapFactory = await ethers.getContractFactory('SimpleSwap')
-const simpleSwap = await simpleSwapFactory.deploy(SwapRouterAddress)
+const simpleSwap = await simpleSwapFactory.deploy(SwapRouterAddress,QuoterAddress)
 await simpleSwap.deployed();
 
 
@@ -54,7 +55,8 @@ console.log("Post  DAI",DAIBalanceAfter,DAIBalanceAfter-DAIBalanceBefore);
 console.log("Incremental   DAI",DAIBalanceAfter-DAIBalanceBefore);
 
     /* Test that we now have more DAI than when we started */
-
+    // const quote = await simpleSwap.quoteETHForDAI(amountIn, { gasLimit: 300000 });
+    // console.log("Quote",quote)
 
   });
 });

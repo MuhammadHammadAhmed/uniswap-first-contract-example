@@ -42,4 +42,47 @@ contract SimpleSwap {
         // The call to `exactInputSingle` executes the swap.
         amountOut = swapRouter.exactInputSingle(params);
     }
+
+
+/* Quote*/
+  function quoteETHForDAI(uint256 amountIn) external returns (uint256 amountOut) {
+
+
+address tokenIn=WETH9;
+address tokenOut=DAI;
+        uint256 minOut = /* Calculate min output */ 0;
+                uint24 fee = /* Calculate min output */ 0;
+
+        uint160 priceLimit = /*1443920880919018475403895602 Calculate price limit */ 0;
+
+
+        // Transfer the specified amount of WETH9 to this contract.
+      //  TransferHelper.safeTransferFrom(WETH9, msg.sender, address(this), amountIn);
+        // Approve the router to spend WETH9.
+       // TransferHelper.safeApprove(WETH9, address(swapRouter), amountIn);
+
+        // Note: To use this example, you should explicitly set slippage limits, omitting for simplicity
+        // Create the params that will be used to execute the swap
+        // ISwapRouter.ExactInputSingleParams memory params =
+        //     ISwapRouter.ExactInputSingleParams({
+        //         tokenIn: WETH9,
+        //         tokenOut: DAI,
+        //         fee: feeTier,
+        //         recipient: msg.sender,
+        //         deadline: block.timestamp,
+        //         amountIn: amountIn,
+        //         amountOutMinimum: minOut,
+        //         sqrtPriceLimitX96: priceLimit
+        //     });
+        // The call to `exactInputSingle` executes the swap.
+       // amountOut = swapRouter.exactInputSingle(params);
+
+       uint amountOut=quoter.quoteExactInputSingle(
+   WETH9,
+   tokenOut,
+   fee, 
+   amountIn,
+   priceLimit
+ );
+    }
 }
