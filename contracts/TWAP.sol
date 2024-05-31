@@ -28,33 +28,16 @@ uint32[] memory timestamps = new uint32[](2);
 timestamps[0] = 0;
 timestamps[1] = 108;
 
-
-//console.log("in get TWAP",timestamps);
-
     // Get the IUniswapV3Pool interface for the pool
     IUniswapV3Pool pool = IUniswapV3Pool(poolAddress);
 
     // This function call retrieves historical price observations within the lookback period
-    
-    (
+        (
      int56[] memory tickCumulatives, uint160[] memory secondsPerLiquidityCumulativeX128s
     ) = pool.observe(timestamps);
 
-    // Additional logic to handle potential edge cases (empty observation window) is recommended
-/*
-    // Calculate the time elapsed within the lookback period based on observations
-    uint32 timeElapsed = observationCardinality > 0
-      ? currentBlockTimestamp - pool.observations(observationIndex).blockTimestamp
-      : 0;
+    
 
-    // Check if there are enough observations to calculate TWAP
-    require(timeElapsed > 0, "Insufficient observations for TWAP calculation");
-
-    // Calculate the TWAP based on cumulative ticks and elapsed time
-    /*
-    uint256 averageTick = (cumulativeTickIn - cumulativeTickOut) / observationCardinality;
-    uint256 twapPrice = priceFromTick(averageTick);
-*/
     return (     tickCumulatives,  secondsPerLiquidityCumulativeX128s);
   }
 
