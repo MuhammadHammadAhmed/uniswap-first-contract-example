@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity =0.7.6;
-//pragma solidity ^0.8.0;
-import "hardhat/console.sol";
+
+
 
 // Import Uniswap V3 interfaces
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 import "@uniswap/v3-core/contracts/libraries/TickMath.sol";
+import "@uniswap/v3-core/contracts/libraries/FullMath.sol";
 
 
 contract TWAP {
@@ -18,7 +19,7 @@ contract TWAP {
 
   // Function to fetch TWAP for a specific token pair and lookback period
   function getTwap(uint256 lookbackSeconds,address poolAddress) public view returns (
-     int56[] memory tickCumulatives, uint160[] memory secondsPerLiquidityCumulativeX128s
+     int56[] memory tickCumulatives, uint160[] memory secondsPerLiquidityCumulativeX128s,uint256[] memory _prices
     ) {
     // Get the current block timestamp
     uint32 currentBlockTimestamp = uint32(block.timestamp);
@@ -35,13 +36,24 @@ timestamps[1] = 108;
         (
      int56[] memory tickCumulatives, uint160[] memory secondsPerLiquidityCumulativeX128s
     ) = pool.observe(timestamps);
+//- for conversion
+
+ uint256[] memory prices = new uint256[](timestamps.length);
+
+ for (uint256 i = 1; i < timestamps.length; i++) {
+  int24 averageTick = int24(
+    (tickCumulatives[i] - tickCumulatives[i - 1]) / int256(secondsPerLiquidityCumulativeX128s[i])
+  );
+  prices[i] = priceFromTick(averageTick);
+}
 
     
+    
 
-    return (     tickCumulatives,  secondsPerLiquidityCumulativeX128s);
+    return (     tickCumulatives,  secondsPerLiquidityCumulativeX128s,prices);
   }
 
-  function priceFromTick(uint256 tick) public pure returns (uint256) {
+  function priceFromTick(int256 tick) public pure returns (uint256) {
   // Fixed point multiplication factor (1.0000000000000001)
   uint256 fixedOnePlus = 0x00000000010000000000000000000000000000000000000000000000000000001;
 
@@ -51,7 +63,22 @@ timestamps[1] = 108;
   // Convert sqrtPriceX96 to price (based on Uniswap V3 fixed point math)
   uint256 numerator = sqrtPriceX96 * sqrtPriceX96;
   uint256 denominator = fixedOnePlus * fixedOnePlus;
-  return numerator / denominator;
+  return uint256(numerator / denominator);
 }
+
+// Create a Quoter instance
+// IUniswapV3Quoter public constant quoter = IUniswapV3Quoter(0x....); // Replace with actual Quoter address
+
+// // Get a quote for the amount of token out you would receive for a given amount of token in
+// function getAmountOut(uint256 amountIn, address tokenIn, address tokenOut, uint24 fee) public view returns (uint256 amountOut) {
+//   amountOut = quoter.quoteExactInputSingle(tokenIn, tokenOut, fee, amountIn, 0); // Specify minimum amount out (0 for any amount)
+// }
+
+// // Get a quote for the amount of token in you would need to swap to get a desired amount of token out
+// function getAmountIn(uint256 amountOut, address tokenIn, address tokenOut, uint24 fee) public view returns (uint256 amountIn) {
+//   amountIn = quoter.quoteExactOutputSingle(tokenIn, tokenOut, fee, amountOut, 0); // Specify maximum amount in (0 for any amount)
+// }
+
+
 
 }
