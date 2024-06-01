@@ -9,8 +9,18 @@ describe("TWAP", function(){
         const TWAPFactory = await ethers.getContractFactory("TWAP");
         const TWAPContract = await TWAPFactory.deploy();
         await TWAPContract.deployed();
-        const response= await TWAPContract.getTwap(5,USDC_WETH);
-        console.log("TWAP",response);
+       // const response= await TWAPContract.getTwap(5,USDC_WETH);
+     //   console.log("TWAP",response);
+        
+
+    });
+    it("Should call a quoter", async function () {
+        /* Deploy the helloWorld contract */
+        const TWAPFactory = await ethers.getContractFactory("TWAP");
+        const TWAPContract = await TWAPFactory.deploy();
+        await TWAPContract.deployed();
+       const response= await TWAPContract.getTwap(5,USDC_WETH);
+       console.log("TWAP",response);
         
 
     });

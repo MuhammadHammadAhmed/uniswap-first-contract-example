@@ -5,9 +5,9 @@ pragma solidity ^0.8.0;
 
 // Import Uniswap V3 interfaces
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
+import "@uniswap/v3-periphery/contracts/interfaces/IQuoter.sol";
 
-//import "./TickMath.sol";
-//import "@uniswap/v3-core/contracts/libraries/FullMath.sol";
+
 
 
 contract TWAP {
@@ -67,18 +67,18 @@ timestamps[1] = 108;
   return  uint256(numerator / denominator);
 }
 
-// Create a Quoter instance
-// IUniswapV3Quoter public constant quoter = IUniswapV3Quoter(0x....); // Replace with actual Quoter address
+//Create a Quoter instance
+IQuoter public constant quoter = IQuoter(0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6); 
 
-// // Get a quote for the amount of token out you would receive for a given amount of token in
-// function getAmountOut(uint256 amountIn, address tokenIn, address tokenOut, uint24 fee) public view returns (uint256 amountOut) {
-//   amountOut = quoter.quoteExactInputSingle(tokenIn, tokenOut, fee, amountIn, 0); // Specify minimum amount out (0 for any amount)
-// }
+// Get a quote for the amount of token out you would receive for a given amount of token in
+function getAmountOut(uint256 amountIn, address tokenIn, address tokenOut, uint24 fee) public  returns (uint256 amountOut) {
+  amountOut = quoter.quoteExactInputSingle(tokenIn, tokenOut, fee, amountIn, 0); // Specify minimum amount out (0 for any amount)
+}
 
-// // Get a quote for the amount of token in you would need to swap to get a desired amount of token out
-// function getAmountIn(uint256 amountOut, address tokenIn, address tokenOut, uint24 fee) public view returns (uint256 amountIn) {
-//   amountIn = quoter.quoteExactOutputSingle(tokenIn, tokenOut, fee, amountOut, 0); // Specify maximum amount in (0 for any amount)
-// }
+// Get a quote for the amount of token in you would need to swap to get a desired amount of token out
+function getAmountIn(uint256 amountOut, address tokenIn, address tokenOut, uint24 fee) public  returns (uint256 amountIn) {
+  amountIn = quoter.quoteExactOutputSingle(tokenIn, tokenOut, fee, amountOut, 0); // Specify maximum amount in (0 for any amount)
+}
 
 
 
