@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity =0.7.6;
+pragma solidity ^0.8.0; 
 
 
 
 // Import Uniswap V3 interfaces
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
-import "@uniswap/v3-core/contracts/libraries/TickMath.sol";
-import "@uniswap/v3-core/contracts/libraries/FullMath.sol";
+
+//import "./TickMath.sol";
+//import "@uniswap/v3-core/contracts/libraries/FullMath.sol";
 
 
 contract TWAP {
@@ -42,9 +43,9 @@ timestamps[1] = 108;
 
  for (uint256 i = 1; i < timestamps.length; i++) {
   int24 averageTick = int24(
-    (tickCumulatives[i] - tickCumulatives[i - 1]) / int256(secondsPerLiquidityCumulativeX128s[i])
+    (tickCumulatives[i] - tickCumulatives[i - 1]) / int160(secondsPerLiquidityCumulativeX128s[i])
   );
-  prices[i] = priceFromTick(averageTick);
+  prices[i] =1;// priceFromTick(averageTick);
 }
 
     
@@ -58,12 +59,12 @@ timestamps[1] = 108;
   uint256 fixedOnePlus = 0x00000000010000000000000000000000000000000000000000000000000000001;
 
   // Convert tick to sqrtPriceX96
-  uint256 sqrtPriceX96 = tick < 0 ? TickMath.getSqrtRatioAtTick(int24(tick)) : TickMath.getSqrtRatioAtTick(int24(tick + 1));
+  uint256 sqrtPriceX96 =0;// tick < 0 ? TickMath.getSqrtRatioAtTick(int24(tick)) : TickMath.getSqrtRatioAtTick(int24(tick + 1));
 
   // Convert sqrtPriceX96 to price (based on Uniswap V3 fixed point math)
   uint256 numerator = sqrtPriceX96 * sqrtPriceX96;
   uint256 denominator = fixedOnePlus * fixedOnePlus;
-  return uint256(numerator / denominator);
+  return  uint256(numerator / denominator);
 }
 
 // Create a Quoter instance
