@@ -10,9 +10,9 @@ describe("ORACLE", function(){
         const observationPeriod = 1; // 1 hour
         /* Deploy the Oracle contract */
         const OracleFActory = await hre.ethers.getContractFactory("UniswapV3Oracle");
-                const oracleContract = await OracleFActory.deploy(YOUR_UNISWAP_FACTORY_ADDRESS, USDC_WETH, observationPeriod);
+                const oracleContract = await OracleFActory.deploy(YOUR_UNISWAP_FACTORY_ADDRESS);
                 await oracleContract.deployed();
-        const response= await oracleContract.getPrice();
+        const response= await oracleContract.getPrice(USDC_WETH, observationPeriod);
         console.log("Oracle response",response);
         
 
