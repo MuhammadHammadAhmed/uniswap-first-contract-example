@@ -6,12 +6,12 @@ import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
 import "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol";
 
 contract UniswapV3Oracle {
-    address public factory;
-    address public pool;
-    uint32 public observationPeriod; // e.g., 3600 for 1 hour
+  
+    // address public pool;
+    // uint32 public observationPeriod; // e.g., 3600 for 1 hour
 
     constructor(address _factory) {
-        factory = _factory;
+     
 
     }
 
