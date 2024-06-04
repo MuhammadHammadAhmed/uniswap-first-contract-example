@@ -18,7 +18,7 @@ contract UniswapV3Oracle {
 
     function getPrice() external view returns (uint256) {
         (int24 tick, ) = OracleLibrary.consult(pool, observationPeriod);
-        uint256 price = OracleLibrary.getQuoteAtTick(tick, 1 ether, IUniswapV3Pool(pool).token0(), IUniswapV3Pool(pool).token1());
+        uint256 price = OracleLibrary.getQuoteAtTick(tick, 1 ether, IUniswapV3Pool(pool).token1(), IUniswapV3Pool(pool).token0());
         return price;
     }
 }
