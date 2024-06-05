@@ -6,7 +6,7 @@ const USDC_WETH='0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8';
 const USDC_USDT='0x3416cf6c708da44db2624d63ea0aaef7113527c6';
 
 describe("ORACLE", function(){
-    it("Should deploy a TOracle contract", async function () {
+    it("Should deploy a Oracle contract", async function () {
         const observationPeriod = 1; // 1 hour
         /* Deploy the Oracle contract */
         const OracleFActory = await hre.ethers.getContractFactory("UniswapV3Oracle");
