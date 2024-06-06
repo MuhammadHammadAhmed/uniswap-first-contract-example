@@ -21,7 +21,7 @@ describe("ChainLink ORACLE", function(){
                 const oracleContract = await OracleFActory.deploy(YOUR_UNISWAP_FACTORY_ADDRESS);
                 await oracleContract.deployed();
                 console.log("before the call");
-        const response= await oracleContract.getChainlinkData(XAU_USD);
+        const response= await oracleContract.getChainlinkData(XAG_USD);
         const xau=parseFloat(response)/10**8
         console.log("ChainLink Oracle response:",xau);
         
