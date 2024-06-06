@@ -22,8 +22,8 @@ describe("ChainLink ORACLE", function(){
                 await oracleContract.deployed();
                 console.log("before the call");
         const response= await oracleContract.getChainlinkData(XAU_USD);
-      //  const xau=ethers.utils.parseUnits(response.value,8);
-        console.log("ChainLink Oracle response:",parseFloat(response)/10**8);
+        const xau=parseFloat(response)/10**8
+        console.log("ChainLink Oracle response:",xau);
         
 
     });
