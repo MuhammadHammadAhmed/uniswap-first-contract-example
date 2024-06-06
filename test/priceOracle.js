@@ -15,7 +15,7 @@ describe("Price ORACLE", function(){
         const OracleFActory = await hre.ethers.getContractFactory("PriceOracle");
                 const oracleContract = await OracleFActory.deploy(YOUR_UNISWAP_FACTORY_ADDRESS);
                 await oracleContract.deployed();
-        const response= await oracleContract.getPrice(amountIn,0,USDC_WETH, observationPeriod);
+        const response= await oracleContract.getUniswapPrice(amountIn,0,USDC_WETH, observationPeriod);
         console.log("PriceOracle response",response);
         
 

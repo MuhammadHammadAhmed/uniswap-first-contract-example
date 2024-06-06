@@ -5,18 +5,40 @@ import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
 import "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+/*ChainLink Interfce*/
+interface AggregatorV3Interface {
+  function decimals() external view returns (uint8);
+
+  function description() external view returns (string memory);
+
+  function version() external view returns (uint256);
+
+  function getRoundData(
+    uint80 _roundId
+  ) external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
+
+  function latestRoundData()
+    external
+    view
+    returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
+}
+
+
 
 contract PriceOracle {
   
+   AggregatorV3Interface internal dataFeed;
     // address public pool;
     // uint32 public observationPeriod; // e.g., 3600 for 1 hour
 
     constructor(address _factory) {
-     
+       dataFeed = AggregatorV3Interface(
+            0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43
+        );
 
     }
 
-    function getPrice(uint128 amountIn,uint8 token, address _pool, uint32 _observationPeriod) external view returns (uint256) {
+    function getUniswapPrice(uint128 amountIn,uint8 token, address _pool, uint32 _observationPeriod) external view returns (uint256) {
       IUniswapV3Pool  pool=IUniswapV3Pool(_pool);
        IERC20 token0=IERC20(pool.token0());
        IERC20  token1=IERC20(pool.token1());
