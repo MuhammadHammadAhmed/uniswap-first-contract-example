@@ -27,14 +27,12 @@ interface AggregatorV3Interface {
 
 contract PriceOracle {
   
-   AggregatorV3Interface internal dataFeed;
+   
     // address public pool;
     // uint32 public observationPeriod; // e.g., 3600 for 1 hour
 
     constructor(address _factory) {
-       dataFeed = AggregatorV3Interface(
-            0x379589227b15F1a12195D3f2d90bBc9F31f95235
-        );
+    
 
     }
 
@@ -50,15 +48,16 @@ contract PriceOracle {
     /**
      * Returns the latest answer.
      */
-    function getChainlinkData() public view returns (int _price) {
-        // prettier-ignore
+    function getChainlinkData(address oracleAddress) public view returns (int _price) {
+      AggregatorV3Interface dataFeed= AggregatorV3Interface(oracleAddress);
+       
         (
             /* uint80 roundID */,
-            int answer,
+            int quote,
             /*uint startedAt*/,
             /*uint timeStamp*/,
             /*uint80 answeredInRound*/
         ) = dataFeed.latestRoundData();
-        return answer;
+        return quote;
     }
 }
