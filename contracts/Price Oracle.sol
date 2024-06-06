@@ -33,7 +33,7 @@ contract PriceOracle {
 
     constructor(address _factory) {
        dataFeed = AggregatorV3Interface(
-            0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43
+            0x379589227b15F1a12195D3f2d90bBc9F31f95235
         );
 
     }
@@ -46,5 +46,19 @@ contract PriceOracle {
         (int24 tick, ) = OracleLibrary.consult(_pool, _observationPeriod);
         uint256 price =(token==0)?OracleLibrary.getQuoteAtTick(tick, amountIn, pool.token0(), IUniswapV3Pool(_pool).token1()): OracleLibrary.getQuoteAtTick(tick, amountIn, pool.token1(), IUniswapV3Pool(_pool).token0());
         return price;
+    }
+    /**
+     * Returns the latest answer.
+     */
+    function getChainlinkData() public view returns (int _price) {
+        // prettier-ignore
+        (
+            /* uint80 roundID */,
+            int answer,
+            /*uint startedAt*/,
+            /*uint timeStamp*/,
+            /*uint80 answeredInRound*/
+        ) = dataFeed.latestRoundData();
+        return answer;
     }
 }
